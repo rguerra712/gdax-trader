@@ -1,0 +1,14 @@
+{
+  "name": "gdax-trader",
+  "version": "1.0.0",
+  "description": "Automatically trade given inputs on AWS Lambda",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "R. Stephen Guerra",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "gdax": "^0.6.0"
+  }
+}

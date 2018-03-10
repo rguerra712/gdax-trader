@@ -1,0 +1,5 @@
+!#/bin/sh
+echo off
+clear
+zip -r index.zip *
+echo Files zipped to file "index.zip"

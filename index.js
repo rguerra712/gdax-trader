@@ -15,29 +15,43 @@
         callback = callback || (() => console.log(message));
         let action = event.action || 'sell';
         let coin = event.coin || 'BTC';
-        let amount = event.amount || '.01';
+        let amount = event.amount || '.005';
         let buySellFactor = action === 'buy' ? -1 : 1;
-        let numberOfLadderSteps = event.numberOfLadderSteps || 10;
+        let numberOfLadderSteps = event.numberOfLadderSteps || 12;
+        let ladderingPercentage = event.ladderingPercentage || 0.001;
         let shouldCancelOrders = event.shouldCancelOrders || false;
         let isMarket = event.isMarket || false;
+        let numberOfMarketBuys = event.numberOfMarketBuys || 1;
+        let currentPrice = event.price || 8412;
         let logOrder = data => {
             message += `\norder placed ${JSON.stringify(data)}`;
+            console.log(data);
         };
         let logError = error => {
             message += `\nerror\n${JSON.stringify(error)}`;
-        }
+            console.error(error);
+        };
         var addOrders = () => {
-            publicClient.getProductOrderBook(`${coin}-USD`)
+            publicClient.getProductTicker(`${coin}-USD`)
                 .then(data => {
-                    let currentPrice = data.bids[0][0];
+                    var priceForBuying = data.bid;
+                    var priceForSelling = data.ask;
+                    if (!currentPrice) {
+                        currentPrice = action === 'buy' ? priceForBuying: priceForSelling;
+                    }
+                    var volume = data.volume;
+                    var size = data.size;
+                    console.log(data);
                     // First make a market buy
                     if (isMarket){
-                        postOrder(amount);
+                        for (let i = 0; i < numberOfMarketBuys; i++) {
+                            postOrder(amount);
+                        }
                     }
                     for (let i = 0; i < numberOfLadderSteps; i++) {
-                        let price = parseFloat(currentPrice) + (currentPrice * i * 0.001 * buySellFactor);
+                        let price = parseFloat(currentPrice) + (currentPrice * i * ladderingPercentage * buySellFactor);
+                        price = Number(price);
                         price = price.toFixed(2);
-                        price = Number(price) + buySellFactor * 0.02;
                         postOrder(amount, price);
                     }
                     callback(null, message);
@@ -69,7 +83,7 @@
             authedClient.placeOrder(buySellParams)
                 .then(logOrder)
                 .catch(logError);
-        }
+        };
     };
     exports.handler();
 })();

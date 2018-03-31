@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Updating dependencies...
+      - printenv
+      - npm install
+  build:
+    commands:
+      - echo Running build...
+      - npm run build
+  post_build:
+    commands:
+      - echo Building deploy artifacts...
+      - mkdir -p build
+      - tar jcf build/myApp-$(date +%Y%m%d%H%m%S).tar.bz2 .eslintrc.js .gitignore README.md buildspec.yml package.json serverless.yml src test
+      - echo Running serverless for deploy
+      - npm install -g serverless
+      - serverless -v -s $(echo ${CODEBUILD_INITIATOR} | cut -d'/' -f2 | cut -d'_' -f3) deploy
+
+artifacts:
+  files:
+    - build*/**
+  discard-paths: yes

@@ -14,9 +14,9 @@ phases:
     commands:
       - echo Building deploy artifacts...
       - mkdir -p build
-      - tar -jcf gdax-trader.tar.bz2 *
+      - tar -zcf gdax-trader.zip *
 
 artifacts:
   files:
-    - build*/**
+    - gdax-trader.zip
   discard-paths: yes

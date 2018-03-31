@@ -4,7 +4,7 @@
   "description": "Automatically trade given inputs on AWS Lambda",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"no tests yet, bad me\""
   },
   "author": "R. Stephen Guerra",
   "license": "Apache-2.0",

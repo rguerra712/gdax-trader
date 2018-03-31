@@ -14,7 +14,7 @@ phases:
     commands:
       - echo Building deploy artifacts...
       - mkdir -p build
-      - tar -jcfd build/gdax-trader.tar.bz2 *
+      - tar -jcf gdax-trader.tar.bz2 *
       - echo Running serverless for deploy
       - npm install -g serverless
       - serverless -v -s $(echo ${CODEBUILD_INITIATOR} | cut -d'/' -f2 | cut -d'_' -f3) deploy

@@ -22,7 +22,7 @@
         let shouldCancelOrders = event.shouldCancelOrders || false;
         let isMarket = event.isMarket || false;
         let numberOfMarketBuys = event.numberOfMarketBuys || 1;
-        let currentPrice = event.price || 8412;
+        let currentPrice = event.price;
         let logOrder = data => {
             message += `\norder placed ${JSON.stringify(data)}`;
             console.log(data);
